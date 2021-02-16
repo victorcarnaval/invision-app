@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import * as CONSTS from '../constants';
@@ -16,6 +16,9 @@ const Form = styled.form`
 
 const Field = styled.div`
     text-align: left;
+    clear: both;
+    overflow: auto;
+    zoom: 1;
 
     label {
         color: ${CONSTS.secondaryColor};
@@ -37,12 +40,21 @@ const Field = styled.div`
     }
 
     .forgot-password {
-        margin-top: 10px;
+        float: right;
         display: block;
         text-align: right;
         font-size: ${CONSTS.fontSizeText};
         color: ${CONSTS.secondaryColor};
         text-decoration: none;
+    }
+
+    &.has-error input {
+        border-color: red;
+    }
+    &.has-error > span {
+        float: left;
+        font-size: ${CONSTS.fontSizeText};
+        color: red;
     }
 `
 
@@ -57,6 +69,17 @@ const Button = styled.button`
     font-size: ${CONSTS.fontSizeButton};
     margin: ${CONSTS.marginBottom} 0;
     min-width: 120px;
+
+    &:hover {
+        cursor: pointer;
+        opacity: 0.9;
+        transition-duration: 0.3s;
+    }
+
+    &:disabled {        
+        opacity: 0.9;
+        cursor: not-allowed;
+    }
 `
 
 const Divider = styled.div`
@@ -102,26 +125,64 @@ const HelperText = styled.p`
 
 const SignInUp = props => {
 
+    const [username, setUsername] = useState(undefined);
+    const [password, setPassword] = useState(undefined);
+    const [fullname, setFullname] = useState(undefined);
+    const [isValid, setIsValid] = useState(true);
     const [isSignup, setIsSignup] = useState(false);
 
     const toggleIsSignup = () => {
         setIsSignup(!isSignup);
+        setUsername(undefined);
+        setPassword(undefined);
+        setFullname(undefined);
+        setIsValid(true);
+    }
+
+    const handleUsername = e => {
+        setUsername(e.target.value);
+    }
+
+    const handlePassword = e => {
+        setPassword(e.target.value);
+    }
+
+    const handleFullname = e => {
+        setFullname(e.target.value);
+    }
+
+    const onSubmit = e => {
+        e.preventDefault();
+
+        if (isSignup && username && password && password.length >= 6 && fullname) {
+            setIsValid(true);
+        } else if (!isSignup && username && password && password.length >= 6) {
+            setIsValid(true);
+        } else {
+            setIsValid(false);
+            return;
+        }
+
+        console.log({ fullname, username, password });
     }
 
 
     return (
         <SignContainer>
             {!isSignup && <>
-                <Form>
+                <Form onSubmit={onSubmit}>
                     <h3>Welcome to Invision</h3>
-                    <Field>
+                    <Field className={!isValid && !username && 'has-error'}>
                         <label>Users name or Email</label>
-                        <input type="text" />
+                        <input type="email" onChange={handleUsername} />
+                        {!isValid && !username && <span>Este campo não pode ser vazio.</span>}
                     </Field>
-                    <Field>
+                    <Field className={!isValid && (!password || password.length < 6) && 'has-error'}>
                         <label>Password</label>
-                        <input type="password" />
+                        <input type="password" onChange={handlePassword} />
                         <a className="forgot-password" href="#">Forgot password?</a>
+                        {!isValid && !password && <span>Este campo não pode ser vazio.</span>}
+                        {!isValid && password && password.length < 6 && <span>A senha não pode ter menos de 6 caracteres.</span>}
                     </Field>
                     <Button>Sign in</Button>
                     <Divider>
@@ -138,19 +199,23 @@ const SignInUp = props => {
                 </HelperText>
             </>}
             {isSignup && <>
-                <Form>
+                <Form onSubmit={onSubmit}>
                     <h3>Getting Started</h3>
-                    <Field>
+                    <Field className={!isValid && !fullname && 'has-error'}>
                         <label>Full Name</label>
-                        <input type="text" />
+                        <input type="text" onChange={handleFullname} />
+                        {!isValid && !fullname && <span>Este campo não pode ser vazio.</span>}
                     </Field>
-                    <Field>
+                    <Field className={!isValid && !username && 'has-error'}>
                         <label>Users name or Email</label>
-                        <input type="text" />
+                        <input type="text" onChange={handleUsername} />
+                        {!isValid && !username && <span>Este campo não pode ser vazio.</span>}
                     </Field>
-                    <Field>
+                    <Field className={!isValid && (!password || password.length < 6) && 'has-error'}>
                         <label>Create Password</label>
-                        <input type="password" />
+                        <input type="password" onChange={handlePassword} />
+                        {!isValid && !password && <span>Este campo não pode ser vazio.</span>}
+                        {!isValid && password && password.length < 6 && <span>A senha não pode ter menos de 6 caracteres.</span>}
                     </Field>
                     <Button>Sign up</Button>
                     <Divider>
