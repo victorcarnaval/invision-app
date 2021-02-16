@@ -1,11 +1,10 @@
 import './App.css';
-import SignContainer from './containers/SignContainer';
+import SignInUp from './components/SignInUp';
 
 function App() {
 
   return (
-    <SignContainer>
-    </SignContainer>
+    <SignInUp />
   );
 }
 
