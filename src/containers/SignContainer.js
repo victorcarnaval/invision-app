@@ -1,16 +1,19 @@
 import styled from 'styled-components';
+import Slider from '../components/Slider';
 import * as CONSTS from '../constants';
 
 export const Container = styled.section`
     background-color: ${CONSTS.defaultColor};
     display: flex;
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
 `
 
 export const LeftContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 50%;
-    height: 100%;
     background-color: ${CONSTS.primaryColor};
 
     @media(max-width: 767px) {
@@ -20,12 +23,17 @@ export const LeftContainer = styled.div`
 
 export const RightContainer = styled.div`
     width: 50%;
-    height: 100%;
     background-color: ${CONSTS.defaultColor};
-    padding: 60px 80px;
+    padding-bottom: 20px;
+
+    @media(max-width: 767px) {
+        width: 100%;
+    }
 `
 
 export const InvisionContainer = styled.div`
+    width: 80%;
+    margin: 60px auto 0 auto;
 
     h2 {
         font-size: ${CONSTS.fontSizeH2};
@@ -45,7 +53,7 @@ const SignContainer = props => {
     return (
         <Container>
             <LeftContainer>
-
+                <Slider />
             </LeftContainer>
             <RightContainer>
                 <InvisionContainer>

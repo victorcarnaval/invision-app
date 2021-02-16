@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import styled from 'styled-components';
+
 import * as CONSTS from '../constants';
 import SignContainer from '../containers/SignContainer';
 import GoogleIcon from '../assets/google_icon.svg';
@@ -100,33 +102,74 @@ const HelperText = styled.p`
 
 const SignInUp = props => {
 
+    const [isSignup, setIsSignup] = useState(false);
+
+    const toggleIsSignup = () => {
+        setIsSignup(!isSignup);
+    }
+
 
     return (
         <SignContainer>
-            <Form>
-                <h3>Welcome to Invision</h3>
-                <Field>
-                    <label>Users name or Email</label>
-                    <input type="text" />
-                </Field>
-                <Field>
-                    <label>Password</label>
-                    <input type="password" />
-                    <a className="forgot-password" href="#">Forgot password?</a>
-                </Field>
-                <Button>Sign in</Button>
-                <Divider>
-                    <span>Or</span>
-                </Divider>
-                <GoogleButton>
-                    <img src={GoogleIcon} alt="Ícone do Google" width="20" />
-                    <span>Sign in with Google</span>
-                </GoogleButton>
-            </Form>
-            <HelperText>
-                New <span>Invision?</span>{' '}
-                <a href="#">Create Account</a>
-            </HelperText>
+            {!isSignup && <>
+                <Form>
+                    <h3>Welcome to Invision</h3>
+                    <Field>
+                        <label>Users name or Email</label>
+                        <input type="text" />
+                    </Field>
+                    <Field>
+                        <label>Password</label>
+                        <input type="password" />
+                        <a className="forgot-password" href="#">Forgot password?</a>
+                    </Field>
+                    <Button>Sign in</Button>
+                    <Divider>
+                        <span>Or</span>
+                    </Divider>
+                    <GoogleButton>
+                        <img src={GoogleIcon} alt="Ícone do Google" width="20" />
+                        <span>Sign in with Google</span>
+                    </GoogleButton>
+                </Form>
+                <HelperText>
+                    New <span>Invision?</span>{' '}
+                    <a href="#" onClick={toggleIsSignup}>Create Account</a>
+                </HelperText>
+            </>}
+            {isSignup && <>
+                <Form>
+                    <h3>Getting Started</h3>
+                    <Field>
+                        <label>Full Name</label>
+                        <input type="text" />
+                    </Field>
+                    <Field>
+                        <label>Users name or Email</label>
+                        <input type="text" />
+                    </Field>
+                    <Field>
+                        <label>Create Password</label>
+                        <input type="password" />
+                    </Field>
+                    <Button>Sign up</Button>
+                    <Divider>
+                        <span>Or</span>
+                    </Divider>
+                    <GoogleButton>
+                        <img src={GoogleIcon} alt="Ícone do Google" width="20" />
+                        <span>Sign up with Google</span>
+                    </GoogleButton>
+                </Form>
+                <HelperText>
+                    By signing up, you agree to <span>Invision</span><br />
+                    <a href="#">Terms of Conditions</a> and <a href="#">Privacy Policy</a>
+                </HelperText>
+                <HelperText>
+                    Already on <span>Invision?</span>{' '}
+                    <a href="#" onClick={toggleIsSignup}>Log in</a>
+                </HelperText>
+            </>}
         </SignContainer>
     );
 }
